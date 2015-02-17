@@ -1,0 +1,18 @@
+<xsl:stylesheet 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+    exclude-result-prefixes="xs">
+<xsl:import href="https://raw.githubusercontent.com/Lully/xsl-data/master/convert_diacritiques"/>
+<xsl:template match="/">
+    <root>
+      <xsl:for-each select="//item">
+      <item>
+        <xsl:for-each select="*"><xsl:copy-of select="."/></xsl:for-each>
+        <xsl:variable name="url_api">
+          http://domybiblio.net/search/search_api.php?type_search=all&amp;q=<xsl:call-template name="convert_diacritiques"><xsl:with-param name="text" select="titre"/></xsl:call-template>+<xsl:call-template name="convert_diacritiques"><xsl:with-param name="text" select="auteur"/></xsl:call-template>&amp;type_doc=all&amp;period=<xsl:value-of select="date"/></xsl:variable>
+          <xsl:copy-of select="document($url_api)"/>
+          </item>
+      </xsl:for-each>
+    </root>
+</xsl:template>
+</xsl:stylesheet>
