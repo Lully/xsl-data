@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-
   <xsl:template name="nnt2ppn">
       <xsl:param name="nnt"/>
       <xsl:variable name="pipeSudocPpn" select="concat('http://pipes.yahoo.com/pipes/pipe.run?_id=8dbe96b657a988e8186b8ef78cf58b0d&amp;_render=rss&amp;nntRecord=', $nnt)"/>
