@@ -3,7 +3,7 @@
 <xsl:variable name="PipeNnt2Ppn">http://pipes.yahoo.com/pipes/pipe.run?_id=8dbe96b657a988e8186b8ef78cf58b0d&amp;_render=rss&amp;nntRecord=</xsl:variable>
   <xsl:template name="nnt2ppn">
       <xsl:param name="nnt"/>
-      <xsl:variable name="pipeSudocPpn" select="concat(PipeNnt2Ppn, nnt)"/>
+      <xsl:variable name="pipeSudocPpn" select="concat(PipeNnt2Ppn, $nnt)"/>
       <xsl:value-of select="document($pipeSudocPpn)//item[1]/description"/>
   </xsl:template>
 </xsl:stylesheet>
