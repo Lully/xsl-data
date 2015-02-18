@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:rdafrbr1="http://rdvocab.info/RDARelationshipsWEMI/"
+  xmlns:rdafrbr2="http://RDVocab.info/uri/schema/FRBRentitiesRDA/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  version="2.0">
+  <xsl:template name="ppn2nnt">
+      <xsl:param name="ppn"/>
+      <xsl:variable name="urlSudocRdf">http://www.sudoc.fr/<xsl:value-of select="$ppn"/>.rdf</xsl:variable>
+      <xsl:value-of select="substring-before(substring-after(document($urlSudocRdf)//rdafrbr1:workManifested/rdafrbr2:Work/@rdf:about, 'http://www.theses.fr/'), '/id')"/>
+  </xsl:template>
+</xsl:stylesheet>
