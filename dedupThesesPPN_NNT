@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Dédoublonnage des thèses sur la base du NNT ou du PPN-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<xsl:key name="dedup-par-ppn" match="item" use="ppn"/>
+<xsl:key name="dedup-par-nnt" match="item" use="nnt"/>
+<xsl:template match="/">
+<xsl:variable name="dedoublonnage_ppn">
+  <root>
+        <xsl:for-each select="//item[count(. | key('dedup-par-ppn', ppn)[1])=1]">
+              <xsl:copy-of select="."/>
+        </xsl:for-each>
+  </root>
+</xsl:variable>
+<!--Puis dédoublonnage par NNT-->
+<root>
+      <xsl:for-each select="$dedoublonnage_ppn//item[count(. | key('dedup-par-nnt', nnt)[1])=1]">
+            <xsl:copy-of select="."/>
+      </xsl:for-each>
+</root>
+</xsl:template>
+
+</xsl:stylesheet>
+
+<!--
+Cette feuille de style traite un fichier contenant des notices de thèse sous la forme :
+   <item>
+      <nnt>1993NICE4648</nnt>
+      <ppn>044099819</ppn>
+  </item>
+   <item>
+      <nnt/>
+      <ppn>041091590</ppn>
+    </item>
+    
+Et supprime les doublons (en ne gardant que la première occurrence) d'abord en dédoublonnant sur les PPN communs, 
+puis sur les NNT (numéro national de thèse) 
+-->
