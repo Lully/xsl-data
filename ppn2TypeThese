@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+  <xsl:template name="ppn2DiscThese">
+      <xsl:param name="ppn"/>
+      <xsl:variable name="pipeSudocDiscThese" select="concat('http://pipes.yahoo.com/pipes/pipe.run?_id=d689257119bd798eb04dbe26811a0efc&amp;_render=rss&amp;critere=Type&amp;ppnRecord=', $ppn)"/>
+      <xsl:value-of select="document($pipeSudocDiscThese)//item[1]/description"/>
+  </xsl:template>
+</xsl:stylesheet>
+
