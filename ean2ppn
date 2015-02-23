@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+  <xsl:template name="nnt2ppn">
+      <xsl:param name="nnt"/>
+      <xsl:variable name="pipeSudocPpn" select="concat('http://pipes.yahoo.com/pipes/pipe.run?_id=34eda9df1b202aa5a5ddba1911926e1dd&amp;_render=rss&amp;EAN=', $nnt)"/>
+      <xsl:value-of select="document($pipeSudocPpn)//item[1]/description"/>
+  </xsl:template>
+</xsl:stylesheet>
