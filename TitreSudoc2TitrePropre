@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Nettoyage des titres-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:template name="titre_nettoye">
+    <xsl:param name="titre"/>
+    <xsl:param name="element"/>
+    <xsl:element name="{$element}">
+    <!--Première étape : suppression de la mention de support-->
+    <xsl:variable name="firststep">
+      <xsl:choose>
+          <xsl:when test="contains($titre, 'Document cartographique')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Document cartographique'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Enregistrement sonore')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Enregistrement sonore'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Images animées')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Images animées'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Image fixe')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Image fixe'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Texte manuscrit')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Texte manuscrit'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Microforme')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Microforme'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Braille')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Braille'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Texte imprimé')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Texte imprimé'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Multimédia multisupport')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Multimédia multisupport'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Musique imprimée')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Musique imprimée'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Musique en braille')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Musique en braille'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Objet')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Objet'"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="contains($titre, 'Ressource électronique')">
+            <xsl:call-template name="type_support">
+              <xsl:with-param name="content" select="$titre"/>
+              <xsl:with-param name="a_supprimer" select="'Ressource électronique'"/>
+            </xsl:call-template>
+          </xsl:when>
+        <xsl:otherwise><xsl:value-of select="$titre"/></xsl:otherwise>
+      </xsl:choose>
+      </xsl:variable>
+      <!--Deuxième étape : suppression de la mention d'auteur-->
+      <xsl:variable name="secondstep">
+        <xsl:choose>
+          <xsl:when test="contains($firststep, '/')">
+            <xsl:value-of select="normalize-space(substring-before($firststep, '/'))"/>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="$firststep"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:value-of select="$secondstep"/>
+    </xsl:element>
+  </xsl:template>
+  
+  <xsl:template name="type_support">
+    <xsl:param name="content"/>
+    <xsl:param name="a_supprimer"/>
+    <xsl:value-of select="normalize-space(substring-before($content, a_supprimer))"/> <xsl:value-of select="normalize-space(substring-after($content, a_supprimer))"/>
+  </xsl:template>
+</xsl:stylesheet>
