@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+  <xsl:template name="decennie_lustre">
+    <xsl:param name="annee"/>
+    <xsl:choose>
+      <xsl:when test="string-length(normalize-space(annee)) = 4">
+        <xsl:call-template name="convertDate"><xsl:with-param name="annee" select="$annee"/></xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="convertDate"><xsl:with-param name="annee" select="substring($annee,1,4)"/></xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template name="convertDate">
+    <xsl:param name="annee"/>
+      <xsl:variable name="chiffre" select="substring($annee, 4,1)"/>
+      <lustre>
+      <xsl:choose>
+        <xsl:when test="$chiffre = '0'"><xsl:value-of select="$annee"/></xsl:when>
+        <xsl:when test="$chiffre = '1'"><xsl:value-of select="number($annee) - 1"/></xsl:when>
+        <xsl:when test="$chiffre = '2'"><xsl:value-of select="number($annee) - 2"/></xsl:when>
+        <xsl:when test="$chiffre = '3'"><xsl:value-of select="number($annee) - 3"/></xsl:when>
+        <xsl:when test="$chiffre = '4'"><xsl:value-of select="number($annee) - 4"/></xsl:when>
+        <xsl:when test="$chiffre = '5'"><xsl:value-of select="$annee"/></xsl:when>
+        <xsl:when test="$chiffre = '6'"><xsl:value-of select="number($annee) - 1"/></xsl:when>
+        <xsl:when test="$chiffre = '7'"><xsl:value-of select="number($annee) - 2"/></xsl:when>
+        <xsl:when test="$chiffre = '8'"><xsl:value-of select="number($annee) - 3"/></xsl:when>
+        <xsl:when test="$chiffre = '9'"><xsl:value-of select="number($annee) - 4"/></xsl:when>
+      </xsl:choose>
+      </lustre>
+      <decennie>
+      <xsl:choose>
+        <xsl:when test="$chiffre = '0'"><xsl:value-of select="$annee"/></xsl:when>
+        <xsl:when test="$chiffre = '1'"><xsl:value-of select="number($annee) - 1"/></xsl:when>
+        <xsl:when test="$chiffre = '2'"><xsl:value-of select="number($annee) - 2"/></xsl:when>
+        <xsl:when test="$chiffre = '3'"><xsl:value-of select="number($annee) - 3"/></xsl:when>
+        <xsl:when test="$chiffre = '4'"><xsl:value-of select="number($annee) - 4"/></xsl:when>
+        <xsl:when test="$chiffre = '5'"><xsl:value-of select="number($annee) - 5"/></xsl:when>
+        <xsl:when test="$chiffre = '6'"><xsl:value-of select="number($annee) - 6"/></xsl:when>
+        <xsl:when test="$chiffre = '7'"><xsl:value-of select="number($annee) - 7"/></xsl:when>
+        <xsl:when test="$chiffre = '8'"><xsl:value-of select="number($annee) - 8"/></xsl:when>
+        <xsl:when test="$chiffre = '9'"><xsl:value-of select="number($annee) - 9"/></xsl:when>
+      </xsl:choose>
+      </decennie>
+  </xsl:template>
+</xsl:stylesheet>
