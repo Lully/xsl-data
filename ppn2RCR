@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+  <xsl:template name="ppn2rcr">
+    <xsl:param name="ppn"/>
+    <xsl:variable name="yahooPipePpn2Rcr">http://pipes.yahoo.com/pipes/pipe.run?_id=9f6a04a5feab994f76b073ef44285e69&amp;_render=rss&amp;ppn=<xsl:value-of select="$ppn"/></xsl:variable>
+    <results>
+      <xsl:for-each select="document($yahooPipePpn2Rcr)//item">
+        <result><xsl:value-of select="title"/></result>
+      </xsl:for-each>
+    </results>
+  </xsl:template>
+</xsl:stylesheet>
