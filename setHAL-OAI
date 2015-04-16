@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Cette feuille de style permet de traiter en entrer une liste de sets HAL sous la forme :
+<listSets>
+<set>UNICE</set>
+<set>UPMC</set>
+...
+</listSets>
+et de récupérer l'ensemble des notices (sans dédoublonnage si la notice est dans plusieurs sets) en 
+allant interroger le serveur OAI-PMH de HAL.
+Difficulté particulière : quand il tombe sur un token contenant le caractère "+", il le convertit en %2B afin de le faire 
+passer dans l'URL pour que celle-ci soit valide et puisse appeler le jeu de notices suivantes.
+-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" 
+      xmlns:oai="http://www.openarchives.org/OAI/2.0/" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+       xmlns:dc="http://purl.org/dc/elements/1.1/"
+       xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"
+      xmlns:tei="http://www.tei-c.org/ns/1.0">
+<xsl:output indent="yes"/>
+<xsl:param name="path"></xsl:param>
+<xsl:variable name="plus">%2B</xsl:variable>
+  <xsl:template match="/">
+  <xsl:for-each select="//set">
+    <xsl:variable name="urlSetIdentifiers">http://api.archives-ouvertes.fr/oai/hal/?verb=ListIdentifiers&amp;metadataPrefix=oai_dc&amp;set=collection:<xsl:value-of select="."/></xsl:variable>
+    <xsl:result-document href="{concat($path, ., '-2.xml')}">
+      <OAI-PMH>
+          <ListRecords>
+                <xsl:call-template name="listRecords">
+                    <xsl:with-param name="urlSetIdentifiers" select="$urlSetIdentifiers"/>
+                </xsl:call-template>
+            
+          </ListRecords>
+      </OAI-PMH>
+    </xsl:result-document>
+    </xsl:for-each>
+  </xsl:template>
+  
+  <xsl:template name="listRecords">
+  <xsl:param name="urlSetIdentifiers"/>
+  <xsl:param name="token"/>
+  <xsl:variable name="resumptionToken" select="document(concat($urlSetIdentifiers, $token))//oai:resumptionToken"/>
+  
+  <xsl:for-each select="document(concat($urlSetIdentifiers, $token))//oai:header">
+      <xsl:call-template name="item">
+        <xsl:with-param name="id" select="oai:identifier"/>
+      </xsl:call-template>
+    </xsl:for-each>
+    
+    <xsl:if test="$resumptionToken != ''">
+    <resumptionToken><xsl:value-of select="$resumptionToken"/></resumptionToken>
+    <URL_resumptionToken_translate><xsl:value-of select="concat('&amp;resumptionToken=', replace($resumptionToken, '\+', $plus))"/></URL_resumptionToken_translate>
+        <xsl:call-template name="listRecords">
+          <xsl:with-param name="urlSetIdentifiers" select="'http://api.archives-ouvertes.fr/oai/hal/?verb=ListIdentifiers'"/>
+          <xsl:with-param name="token" select="concat('&amp;resumptionToken=', replace($resumptionToken, '\+', $plus))"/>
+        </xsl:call-template>
+    </xsl:if>
+
+  </xsl:template>
+  
+  <xsl:template name="item">
+    <xsl:param name="id"/>
+    <xsl:variable name="urlDcRecord">http://api.archives-ouvertes.fr/oai/hal/?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=<xsl:value-of select="$id"/></xsl:variable>
+    <xsl:copy-of select="document($urlDcRecord)//oai:record"/>
+  </xsl:template>
+  
+</xsl:stylesheet>
+ 
