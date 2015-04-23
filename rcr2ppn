@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<xsl:template name="rcr2ppn">
+<!--Feuille XSL qui renvoie le PPN correspondant au RCR fournit en paramètre du template-->
+  <xsl:param name="rcr"/>
+  <xsl:variable name="urlRcr">http://pipes.yahoo.com/pipes/pipe.run?_id=57589d91a3fd024eea88cfd1099a8e54&amp;_render=rss&amp;rcr=<xsl:value-of select="$rcr"/></xsl:variable>
+  <xsl:variable name="ppn" select="document($urlRcr)//item/title"/>
+  <xsl:value-of select="$ppn"/>
+</xsl:template>
