@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<!--Template qui pour un RCR donné renvoie les coordonnées Latitude, longitude et adresse postale-->
+  <xsl:template name="rcr2loc">
+    <param name="rcr"/>
+    <xsl:variable name="idrefRecord"><xsl:copy-of select="document(concat('http://www.idref.fr/', $rcr, '.xml'))//record"/></xsl:variable>
+    <lat><xsl:value-of select="$idrefRecord//datafield[@tag='202']/subfield[@code='a']"/></lat>
+    <lon><xsl:value-of select="$idrefRecord//datafield[@tag='202']/subfield[@code='b']"/></lon>
+    <addr><xsl:copy-of select="$idrefRecord//datafield[@tag='200']"/></addr>
+  </xsl:template>
+</xsl:stylesheet>
