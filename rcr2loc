@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-<!--Template qui pour un RCR donné renvoie les coordonnées Latitude, longitude et adresse postale-->
+<!--Cette feuille de style renvoie les informationsde géolocalisation (latitude, longitude, coordonnées postales) pour un RCR donné. 
+Elle exploite au passage une autre feuille de style qui convertit le RCR dans PPN (car c'est sur la base du PPN qu'on peut récupérer ces informations dans IdRef)-->
+  <xsl:import href="https://raw.githubusercontent.com/Lully/xsl-data/master/rcr2ppn"/>
   <xsl:template name="rcr2loc">
     <xsl:param name="rcr"/>
-    <xsl:variable name="idrefRecord"><xsl:copy-of select="document(concat('http://www.idref.fr/OracleSru/OracleSru?Requete=GetDatabaseS%20LstAut(%27rcr_t:', $rcr, '%27,100)%20GetDatabaseF%20dual'))//record"/></xsl:variable>
+    <xsl:variable name="ppn">
+      <xsl:call-template name="rcr2ppn">
+        <xsl:with-param name="rcr" select="$rcr"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="idrefRecord">
+      <xsl:copy-of select="document(concat('http://www.idref.fr/', $ppn, '.xml'))//record"/>
+    </xsl:variable>
     <lat><xsl:value-of select="$idrefRecord//datafield[@tag='202']/subfield[@code='a']"/></lat>
     <lon><xsl:value-of select="$idrefRecord//datafield[@tag='202']/subfield[@code='b']"/></lon>
     <addr><xsl:copy-of select="$idrefRecord//datafield[@tag='200']"/></addr>
