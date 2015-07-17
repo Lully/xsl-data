@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+    
+    <xsl:template name="marc21record2unimarc">
+    <xsl:param name="ocn"/>
+    <xsl:param name="oclc_record"/>
+    <xsl:param name="id_record"/>
+
+
+                <leader><xsl:value-of select="$oclc_record//marc:leader"/></leader>
+                <controlfield tag="FMT">BK</controlfield>
+                <controlfield tag="001"><xsl:value-of select="$id"/></controlfield>
+                <controlfield tag="LDR"><xsl:value-of select="$oclc_record//marc:leader"/></controlfield>
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='020']">
+                    <datafield tag="010" ind1=" " ind2=" ">
+                      <subfield code="a"><xsl:value-of select="marc:subfield[@code='a']"/></subfield>
+                    </datafield>
+                  </xsl:for-each>
+
+                <datafield tag="035" ind1="" ind2=""><subfield code="a">(OCoLC)<xsl:value-of select="$oclc_record//marc:controlfield[@tag='001']"/></subfield></datafield>
+
+
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='041']">
+                    <datafield tag="101" ind1="0" ind2="">
+                      <subfield code="a"><xsl:value-of select="marc:subfield[@code='a']"/></subfield>
+                    </datafield>
+                  </xsl:for-each>
+
+
+              
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='245']">
+                    <datafield tag="200" ind1="1" ind2="">
+                    <xsl:for-each select="marc:subfield[@code='a']">
+                      <subfield code="a"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template>
+                        </subfield>
+                      </xsl:for-each>
+                      <subfield code="b">Texte imprimé</subfield>
+                    <xsl:for-each select="marc:subfield[@code='b']">
+                      <subfield code="e"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template>
+                        </subfield>
+                      </xsl:for-each>
+                    <xsl:for-each select="marc:subfield[@code='c']">
+                      <subfield code="f"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template>
+                        </subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+
+                
+
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='260']">
+                    <datafield tag="210" ind1="" ind2="">
+                    <xsl:for-each select="marc:subfield[@code='a']">
+                      <subfield code="a"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template>
+                        </subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='b']">
+                        <subfield code="c"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='c']">
+                        <subfield code="d"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='e']">
+                        <subfield code="e"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='f']">
+                        <subfield code="g"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='g']">
+                        <subfield code="h"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+              
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='300']">
+                    <datafield tag="215" ind1="" ind2="">
+                      <xsl:for-each select="marc:subfield[@code='a']">
+                      <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='b']">
+                        <subfield code="c"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='c']">
+                        <subfield code="d"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                      <xsl:for-each select="marc:subfield[@code='e']">
+                        <subfield code="e"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='490']">
+                    <datafield tag="225" ind1="1" ind2="">
+                       <xsl:for-each select="marc:subfield[@code='a']">
+                      <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+               <xsl:for-each select="$oclc_record//marc:datafield[@tag='856']/subfield[@code='q']">
+              <datafield tag="337" ind1="" ind2="">
+                     <xsl:for-each select="marc:subfield[@code='a']">
+                      <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+              </datafield>
+              </xsl:for-each>
+
+              
+                <xsl:for-each select="$oclc_record//marc:datafield[@tag='040']">
+                    <datafield tag="410" ind1="" ind2="">
+                        <xsl:for-each select="marc:subfield[@code='a']">
+                            <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='776']">
+                    <datafield tag="452" ind1="" ind2="0">
+                      <xsl:for-each select="marc:subfield[@code='d']">
+                          <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+              
+                <xsl:for-each select="$oclc_record//marc:datafield[@tag='490']">
+                    <datafield tag="461" ind1="" ind2="">
+                        <xsl:for-each select="marc:subfield[@code='a']">
+                          <subfield code="t"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+             
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='650']">
+                    <datafield tag="606" ind1="" ind2="">
+                      <xsl:for-each select="marc:subfield[@code='a']">
+                       <subfield code="a"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                        </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+              
+                <xsl:for-each select="$oclc_record//marc:datafield[@tag='752']">
+                    <datafield tag="620" ind1="" ind2="">
+                        <xsl:for-each select="marc:subfield[@code='a']">
+                           <subfield code="a"><xsl:value-of select="."/></subfield>
+                      </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='100']">
+                    <datafield tag="700" ind1="" ind2="1">
+                      <xsl:for-each select="marc:subfield[@code='a']">
+                       <subfield code="a"><xsl:call-template name="valeur_propre">
+                          <xsl:with-param name="value" select="."/>
+                        </xsl:call-template></subfield>
+                        </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+                 <xsl:for-each select="$oclc_record//marc:datafield[@tag='700']">
+                    <datafield tag="701" ind1="" ind2="1">
+                      <xsl:for-each select="marc:subfield[@code='a']">
+                       <subfield code="a">
+                        <xsl:call-template name="valeur_propre">
+                                <xsl:with-param name="value" select="."/>
+                          </xsl:call-template>
+                          </subfield>
+                        </xsl:for-each>
+                    </datafield>
+                  </xsl:for-each>
+
+  </xsl:template>
+  
+  <xsl:template name="valeur_propre">
+     <xsl:param name="value"/>
+     <xsl:variable name="length" select="string-length($value)"/>
+     <xsl:variable name="length_1" select="$length - 1"/>
+      <xsl:variable name="last_character" select="substring($value,$length,1)"/>
+      <xsl:variable name="value_1" select="normalize-space(substring($value,0,$length))"/>
+      <xsl:choose>
+        <xsl:when test="$last_character = '.'"><xsl:value-of select="$value_1"/></xsl:when>
+        <xsl:when test="$last_character = ';'"><xsl:value-of select="$value_1"/></xsl:when>
+        <xsl:when test="$last_character = ':'"><xsl:value-of select="$value_1"/></xsl:when>
+        <xsl:when test="$last_character = ','"><xsl:value-of select="$value_1"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
+      </xsl:choose>
+</xsl:template>
+</xsl:stylesheet>
