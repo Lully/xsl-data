@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Cette feuille de style récupère la liste des références bibliographiques sur la base d'un identifiant d'auteur mis en paramètre $var
+-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:template name="HALdocid2refbib">
+    <xsl:param name="var"/>
+    <xsl:copy-of select="document(concat('http://api.archives-ouvertes.fr/search/?wt=xml&amp;q=authId_i:%22', $var, '%22'))//result"/>
+  </xsl:template>
+</xsl:stylesheet>
